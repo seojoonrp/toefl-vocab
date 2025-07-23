@@ -1,4 +1,4 @@
-import "../styles/week_modal_styles.css";
+import "../styles/modal_styles.css";
 
 const WeekModal = ({ week, onClose, weekWords }) => {
   const date = weekWords[0]?.date;

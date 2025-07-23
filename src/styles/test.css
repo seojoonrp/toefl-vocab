@@ -1,0 +1,18 @@
+.test-screen-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.title-text {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.cur-word-count-text {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+}

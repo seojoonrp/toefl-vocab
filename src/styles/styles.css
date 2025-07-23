@@ -113,6 +113,11 @@ body {
 .reverse {
   transform: rotate(180deg);
 }
+.nondraggable {
+  -webkit-user-drag: none;
+  user-select: none;
+  pointer-events: auto;
+}
 .test-language-wrapper {
   display: flex;
   flex-direction: column;
