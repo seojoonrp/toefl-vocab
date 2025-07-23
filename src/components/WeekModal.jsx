@@ -1,9 +1,7 @@
 import "../styles/week_modal_styles.css";
-import wordData from "../data/wordData";
 
-const WeekModal = ({ week, onClose }) => {
-  const words = wordData().filter((word) => word.week === week);
-  const date = words[0]?.date;
+const WeekModal = ({ week, onClose, weekWords }) => {
+  const date = weekWords[0]?.date;
 
   return (
     <div
@@ -18,7 +16,7 @@ const WeekModal = ({ week, onClose }) => {
           <span className="modal-date-text">&nbsp;&nbsp;{date}</span>
         </span>
         <div className="modal-word-wrapper">
-          {words.map((word, i) => (
+          {weekWords.map((word, i) => (
             <div key={i} className="modal-word-row">
               <div
                 className="modal-word english"

@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 
-import wordData from "./data/wordData.js";
+import useWordData from "./hooks/useWordData";
 import WeekCard from "./components/WeekCard.jsx";
 import "./styles/styles.css";
 import ArrowImage from "./assets/images/arrow.svg";
 
 const App = () => {
-  const words = wordData();
+  const words = useWordData();
 
   const [testWordCount, setTestWordCount] = useState(30);
   const [testLanguage, setTestLanguage] = useState("e_from_k");
@@ -24,7 +24,7 @@ const App = () => {
             <img
               src={ArrowImage}
               className="arrow-image reverse"
-              onClick={() => setTestWordCount(Math.max(testWordCount - 5, 0))}
+              onClick={() => setTestWordCount(Math.max(testWordCount - 5, 5))}
             />
             <span className="test-words-counter-text">{testWordCount}</span>
             <img
@@ -65,7 +65,7 @@ const App = () => {
         <button className="test-start-button">GO!</button>
       </div>
       {weeks.map((week) => (
-        <WeekCard key={week} week={week} />
+        <WeekCard key={week} week={week} words={words} />
       ))}
     </div>
   );

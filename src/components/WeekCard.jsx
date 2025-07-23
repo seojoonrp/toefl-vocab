@@ -1,16 +1,15 @@
 import React, { useState } from "react";
-import wordData from "../data/wordData";
 import WeekModal from "./WeekModal.jsx";
 
-const WeekCard = ({ week }) => {
+const WeekCard = ({ week, words }) => {
   const [open, setOpen] = useState(false);
-  const words = wordData().filter((word) => word.week === week);
+  const weekWords = words.filter((word) => word.week === week);
 
-  if (words.length === 0) return null;
+  if (weekWords.length === 0) return null;
 
-  const date = words[0].date;
-  const total = words.reduce((acc, word) => acc + word.total, 0);
-  const correct = words.reduce((acc, word) => acc + word.correct, 0);
+  const date = weekWords[0].date;
+  const total = weekWords.reduce((acc, word) => acc + word.total, 0);
+  const correct = weekWords.reduce((acc, word) => acc + word.correct, 0);
   const accuracy = total > 0 ? ((correct / total) * 100).toFixed(1) : 0;
 
   return (
@@ -32,7 +31,13 @@ const WeekCard = ({ week }) => {
         </span>
       </div>
 
-      {open && <WeekModal week={week} onClose={() => setOpen(false)} />}
+      {open && (
+        <WeekModal
+          week={week}
+          onClose={() => setOpen(false)}
+          weekWords={weekWords}
+        />
+      )}
     </>
   );
 };

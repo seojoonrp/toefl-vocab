@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 const API_URL =
   "https://script.google.com/macros/s/AKfycbyoVT5NHzjF5Lyi6QTESJGnEaUWgUFsRlYse5WGgM1NkG_roebgPbbktJoxbDBhYlBJ/exec";
 
-const wordData = () => {
-  const [data, setData] = useState([]);
+const useWordData = () => {
+  const [words, setWords] = useState([]);
 
   useEffect(() => {
     fetch(API_URL)
@@ -18,11 +18,11 @@ const wordData = () => {
           total: parseInt(row[4]),
           correct: parseInt(row[5]),
         }));
-        setData(parsed);
+        setWords(parsed);
       });
   }, []);
 
-  return data;
+  return words;
 };
 
-export default wordData;
+export default useWordData;
