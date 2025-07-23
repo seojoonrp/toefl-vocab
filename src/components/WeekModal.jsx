@@ -1,3 +1,4 @@
+import "../styles/week_modal_styles.css";
 import wordData from "../data/wordData";
 
 const WeekModal = ({ week, onClose }) => {
@@ -12,9 +13,6 @@ const WeekModal = ({ week, onClose }) => {
       onClick={onClose}
     >
       <div className="modal-wrapper" onClick={(e) => e.stopPropagation()}>
-        {/* <button className="modal-close-button" onClick={onClose}>
-          ⨉
-        </button> */}
         <span className="modal-title-text">
           Week {week}
           <span className="modal-date-text">&nbsp;&nbsp;{date}</span>
