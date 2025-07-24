@@ -1,6 +1,12 @@
 body {
-  font-family: "Pretendard", sans-serif;
+  font-family: "Pretendard", sans-serif !important;
   overflow: auto;
+}
+
+@supports (-webkit-touch-callout: none) {
+  body {
+    font-family: "Pretendard", sans-serif !important;
+  }
 }
 
 :root {
@@ -36,30 +42,33 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: start;
-  margin-left: 50px;
+  margin-left: 40px;
 }
 .week-text {
+  font-family: "Pretendard", sans-serif;
   color: white;
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 600;
   letter-spacing: -0.48px;
 }
 .date-text {
+  font-family: "Pretendard", sans-serif;
   color: white;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 300;
   letter-spacing: -0.32px;
 }
 .accuracy-text {
+  font-family: "Pretendard", sans-serif;
   color: white;
   font-size: 24px;
   font-weight: 600;
   letter-spacing: -0.48px;
-  margin-right: 50px;
+  margin-right: 40px;
 }
 .accuracy-label {
   color: white;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 300;
   letter-spacing: -0.4px;
 }
