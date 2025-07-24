@@ -80,8 +80,14 @@ const TestScreen = () => {
   };
 
   const [isFinished, setIsFinished] = useState(false);
+  const [sentResults, setSentResults] = useState(false);
 
   const sendResultsToSheet = async () => {
+    if (sentResults) {
+      alert("결과 이미 전송됨 ㄱㄷ");
+      return;
+    }
+
     const resultPayLoad = mainQueue.map((word) => ({
       english: word.english,
       correctDelta: word.correct,
@@ -97,7 +103,20 @@ const TestScreen = () => {
       body: JSON.stringify(resultPayLoad),
     });
 
+    setSentResults(true);
     console.log("Successfully Sent Data");
+  };
+
+  const handleGoHome = () => {
+    if (!sentResults) {
+      alert("결과전송하셈");
+      return;
+    }
+
+    setSentResults(false);
+    setIsFinished(false);
+
+    navigate("/");
   };
 
   return (
@@ -146,12 +165,12 @@ const TestScreen = () => {
         </>
       ) : (
         <>
-          <span className="finished-text">시험 종료</span>
+          <span className="finished-text">시험 종료!</span>
           <button className="send-results-button" onClick={sendResultsToSheet}>
-            결과 전송
+            Send Results
           </button>
-          <button className="home-button" onClick={() => navigate("/")}>
-            홈으로
+          <button className="home-button" onClick={handleGoHome}>
+            Home
           </button>
         </>
       )}

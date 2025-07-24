@@ -151,3 +151,41 @@ body {
   cursor: pointer;
   outline: none;
 }
+
+.finished-text {
+  color: var(--blue);
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.8px;
+  margin-top: -20px;
+  margin-bottom: 20px;
+}
+.send-results-button {
+  background-color: var(--light-blue);
+  color: white;
+  font-family: "Pretendard", sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: -0.3px;
+  padding: 8px 0;
+  width: 170px;
+  border-radius: 18px;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  margin-bottom: 5px;
+}
+.home-button {
+  background-color: var(--blue);
+  color: white;
+  font-family: "Pretendard", sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: -0.3px;
+  padding: 8px 0;
+  width: 170px;
+  border-radius: 18px;
+  border: none;
+  cursor: pointer;
+  outline: none;
+}
