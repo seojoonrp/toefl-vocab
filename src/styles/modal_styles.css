@@ -11,8 +11,8 @@
   z-index: 100;
 }
 .modal-wrapper {
-  width: 321px;
-  height: 518px;
+  width: 300px;
+  height: 480px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
