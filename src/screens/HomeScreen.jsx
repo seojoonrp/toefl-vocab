@@ -13,15 +13,22 @@ const HomeScreen = () => {
 
   const [testWordCount, setTestWordCount] = useState(30);
   const [testLanguage, setTestLanguage] = useState("e_from_k");
+  const [testMode, setTestMode] = useState("practice");
 
   const weeks = [...new Set(words.map((word) => word.week))].sort(
     (a, b) => b - a
   );
 
   const handleStartTest = () => {
-    navigate("/test", {
-      state: { testWordCount, testLanguage, words },
-    });
+    if (testMode === "test") {
+      navigate("/test", {
+        state: { testWordCount, testLanguage, words },
+      });
+    } else {
+      navigate("/practice", {
+        state: { testWordCount, testLanguage, words },
+      });
+    }
   };
 
   return (
@@ -71,10 +78,34 @@ const HomeScreen = () => {
           </button>
         </div>
 
+        <div className="test-mode-wrapper">
+          <button
+            className="test-language-button"
+            onClick={() => setTestMode("practice")}
+            style={{
+              backgroundColor: testMode === "practice" ? "var(--blue)" : "",
+              color: testMode === "practice" ? "white" : "",
+            }}
+          >
+            Practice Mode
+          </button>
+          <button
+            className="test-language-button"
+            onClick={() => setTestMode("test")}
+            style={{
+              backgroundColor: testMode === "test" ? "var(--blue)" : "",
+              color: testMode === "test" ? "white" : "",
+            }}
+          >
+            Test Mode
+          </button>
+        </div>
+
         <button className="test-start-button" onClick={handleStartTest}>
           GO!
         </button>
       </div>
+
       {weeks.map((week) => (
         <WeekCard key={week} week={week} words={words} />
       ))}

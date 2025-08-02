@@ -9,6 +9,7 @@
   justify-content: center;
   align-items: center;
   z-index: 100;
+  overflow: hidden;
 }
 .modal-wrapper {
   width: 300px;

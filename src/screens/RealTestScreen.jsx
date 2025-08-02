@@ -7,7 +7,7 @@ import "../styles/test.css";
 const API_URL =
   "https://script.google.com/macros/s/AKfycbzlU6YFbMhh0uPFke31Q1w5X3wXbWljM4sKB78MSfQb7w6iW8DPKSeve9H0YHbSDEY/exec";
 
-const TestScreen = () => {
+const RealTestScreen = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -23,24 +23,18 @@ const TestScreen = () => {
     }));
   }, [words, testWordCount]);
 
-  const [curQueue, setCurQueue] = useState(mainQueue);
-  const [reviewQueue, setReviewQueue] = useState([]);
-  const [curCorrectCount, setCurCorrectCount] = useState(0);
+  const [correctCount, setCorrectCount] = useState(0);
   const [curIndex, setCurIndex] = useState(0);
   const [userInput, setUserInput] = useState("");
   const [isWrong, setIsWrong] = useState(false);
 
-  const curWord = curQueue[curIndex];
+  const curWord = mainQueue[curIndex];
   const prompt = testLanguage === "e_from_k" ? curWord.korean : curWord.english;
   const answer = testLanguage === "e_from_k" ? curWord.english : curWord.korean;
 
-  const moveToNextWord = (nextReviewQueue = reviewQueue) => {
-    if (curIndex + 1 < curQueue.length) {
+  const moveToNextWord = () => {
+    if (curIndex + 1 < mainQueue.length) {
       setCurIndex((prev) => prev + 1);
-    } else if (nextReviewQueue.length > 0) {
-      setCurQueue(nextReviewQueue);
-      setReviewQueue([]);
-      setCurIndex(0);
     } else {
       setIsFinished(true);
       console.log("최종 결과:", mainQueue);
@@ -62,16 +56,13 @@ const TestScreen = () => {
       }
     } else {
       curWord.wrong += 1;
-
-      const updatedReviewQueue = [...reviewQueue, curWord];
-      setReviewQueue(updatedReviewQueue);
-      moveToNextWord(updatedReviewQueue);
+      moveToNextWord();
     }
   };
 
   const handleCorrect = () => {
     curWord.correct += 1;
-    setCurCorrectCount((prev) => prev + 1);
+    setCorrectCount((prev) => prev + 1);
     moveToNextWord();
   };
 
@@ -121,7 +112,7 @@ const TestScreen = () => {
         <>
           <span className="title-text">Test</span>
           <span className="cur-word-count-text">
-            {curCorrectCount} / {mainQueue.length}
+            {curIndex + 1} / {mainQueue.length}
           </span>
 
           <div className="test-prompt">{prompt}</div>
@@ -172,6 +163,9 @@ const TestScreen = () => {
       ) : (
         <>
           <span className="finished-text">시험 종료!</span>
+          <span className="correct-count-text">
+            {correctCount} / {mainQueue.length}
+          </span>
           <button className="send-results-button" onClick={sendResultsToSheet}>
             Send Results
           </button>
@@ -184,4 +178,4 @@ const TestScreen = () => {
   );
 };
 
-export default TestScreen;
+export default RealTestScreen;

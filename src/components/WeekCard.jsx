@@ -26,7 +26,7 @@ const WeekCard = ({ week, words }) => {
           <span className="date-text">{date}</span>
         </div>
         <span className="accuracy-text">
-          <span className="accuracy-label">Accuracy </span>
+          <span className="accuracy-label">Accuracy &nbsp;&nbsp;</span>
           {accuracy}%
         </span>
       </div>

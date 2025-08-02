@@ -115,3 +115,11 @@ body {
   cursor: pointer;
   outline: none;
 }
+
+.correct-count-text {
+  color: var(--blue);
+  font-size: 19px;
+  font-weight: 400;
+  letter-spacing: -0.4px;
+  margin-bottom: 25px;
+}
