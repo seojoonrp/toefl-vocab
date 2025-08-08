@@ -12,6 +12,8 @@ const RealTestScreen = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const [cacList, setCacList] = useState([]);
+
   const { testWordCount, testLanguage, words } = location.state || {};
 
   const mainQueue = useMemo(() => {
@@ -75,7 +77,6 @@ const RealTestScreen = () => {
       setCurIndex((prev) => prev + 1);
     } else {
       setIsFinished(true);
-      console.log("최종 결과:", mainQueue);
     }
 
     setUserInput("");
@@ -108,11 +109,25 @@ const RealTestScreen = () => {
     moveToNextWord();
   };
 
+  const handleCheckAsCorrect = () => {
+    setCacList((prev) => [
+      ...prev,
+      {
+        english: curWord.english,
+        answer: curWord.korean,
+        user_answer: userInput,
+      },
+    ]);
+    handleCorrect();
+  };
+
   const [isFinished, setIsFinished] = useState(false);
   const [sentResults, setSentResults] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const sendResultsToSheet = async () => {
+    console.log("Check as Correct: ", cacList);
+
     if (sentResults) {
       alert("결과 전송중임 ㄱㄷ");
       return;
@@ -177,7 +192,7 @@ const RealTestScreen = () => {
                   if (e.key === "Enter") handleNext();
                   if (e.key === " ") {
                     e.preventDefault();
-                    handleCorrect();
+                    handleCheckAsCorrect();
                   }
                 }}
                 autoFocus
@@ -203,7 +218,7 @@ const RealTestScreen = () => {
             {isWrong && (
               <button
                 className="test-next-button"
-                onClick={handleCorrect}
+                onClick={handleCheckAsCorrect}
                 style={{ backgroundColor: "var(--light-blue)" }}
               >
                 Check as Correct

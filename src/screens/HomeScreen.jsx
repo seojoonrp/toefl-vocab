@@ -12,8 +12,8 @@ const HomeScreen = () => {
 
   const words = useWordData();
 
-  const [testWordCount, setTestWordCount] = useState(30);
-  const [testLanguage, setTestLanguage] = useState("e_from_k");
+  const [testWordCount, setTestWordCount] = useState(40);
+  const [testLanguage, setTestLanguage] = useState("k_from_e");
   const [testMode, setTestMode] = useState("practice");
 
   const weeks = [...new Set(words.map((word) => word.week))].sort(

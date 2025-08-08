@@ -81,7 +81,6 @@ const TestScreen = () => {
       setCurIndex(0);
     } else {
       setIsFinished(true);
-      console.log("최종 결과:", mainQueue);
     }
 
     setUserInput("");
