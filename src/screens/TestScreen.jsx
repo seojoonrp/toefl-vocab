@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 import "../styles/styles.css";
 import "../styles/test.css";
+import LoadingOverlay from "../components/LoadingOverlay";
 
 const API_URL =
   "https://script.google.com/macros/s/AKfycbzlU6YFbMhh0uPFke31Q1w5X3wXbWljM4sKB78MSfQb7w6iW8DPKSeve9H0YHbSDEY/exec";
@@ -88,8 +89,12 @@ const TestScreen = () => {
   };
 
   const handleNext = () => {
-    const isCorrect =
-      userInput.trim().toLowerCase() === answer.trim().toLowerCase();
+    const normalizedAnswer = answer
+      .split(",")
+      .map((item) => item.trim().toLowerCase());
+    const userAnswer = userInput.trim().toLowerCase();
+
+    const isCorrect = normalizedAnswer.includes(userAnswer);
 
     if (!isWrong) {
       if (isCorrect) {
@@ -114,6 +119,7 @@ const TestScreen = () => {
 
   const [isFinished, setIsFinished] = useState(false);
   const [sentResults, setSentResults] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const sendResultsToSheet = async () => {
     if (sentResults) {
@@ -127,6 +133,8 @@ const TestScreen = () => {
       totalDelta: word.correct + word.wrong,
     }));
 
+    setLoading(true);
+
     await fetch(API_URL, {
       redirect: "follow",
       method: "POST",
@@ -137,7 +145,8 @@ const TestScreen = () => {
     });
 
     setSentResults(true);
-    alert("결과가 전송되었습니다!");
+    setLoading(false);
+    // alert("결과가 전송되었습니다!");
   };
 
   const handleGoHome = () => {
@@ -154,6 +163,8 @@ const TestScreen = () => {
 
   return (
     <div className="test-screen-wrapper">
+      {loading && <LoadingOverlay message="결과를 전송중입니다..." />}
+
       {!isFinished ? (
         <>
           <span className="title-text">Practice</span>
@@ -174,6 +185,10 @@ const TestScreen = () => {
                 style={{ position: "absolute", top: "-1000px" }}
                 onKeyDown={(e) => {
                   if (e.key === "Enter") handleNext();
+                  if (e.key === " ") {
+                    e.preventDefault();
+                    handleCorrect();
+                  }
                 }}
                 autoFocus
               />

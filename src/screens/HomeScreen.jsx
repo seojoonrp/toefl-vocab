@@ -5,6 +5,7 @@ import useWordData from "../hooks/useWordData";
 import WeekCard from "../components/WeekCard.jsx";
 import "../styles/styles.css";
 import ArrowImage from "../assets/images/arrow.svg";
+import LoadingOverlay from "../components/LoadingOverlay.jsx";
 
 const HomeScreen = () => {
   const navigate = useNavigate();
@@ -33,6 +34,10 @@ const HomeScreen = () => {
 
   return (
     <div className="main-wrapper">
+      {words.length === 0 && (
+        <LoadingOverlay message="단어를 로딩중입니다..." />
+      )}
+
       <div className="test-wrapper">
         <div className="test-words-wrapper">
           <span className="test-words-text">Words</span>
