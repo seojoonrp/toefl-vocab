@@ -187,7 +187,11 @@ const TestPage = () => {
               </div>
 
               <input
-                style={{ position: "absolute", top: "-1000px" }}
+                style={{
+                  position: "absolute",
+                  top: "-1000px",
+                  fontSize: "100px",
+                }}
                 onKeyDown={(e) => {
                   if (e.key === "Enter") handleNext();
                   if (e.key === " ") {
