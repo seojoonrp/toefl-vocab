@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import useWordData from "../hooks/useWordData";
+import useWordData from "../hooks/useWordData.js";
 import WeekCard from "../components/WeekCard.jsx";
 import "../styles/styles.css";
 import ArrowImage from "../assets/images/arrow.svg";
 import LoadingOverlay from "../components/LoadingOverlay.jsx";
 
-const HomeScreen = () => {
+const HomePage = () => {
   const navigate = useNavigate();
 
   const words = useWordData();
@@ -118,4 +118,4 @@ const HomeScreen = () => {
   );
 };
 
-export default HomeScreen;
+export default HomePage;

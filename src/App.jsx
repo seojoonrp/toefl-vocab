@@ -1,15 +1,15 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import HomeScreen from "./screens/HomeScreen.jsx";
-import TestScreen from "./screens/TestScreen.jsx";
-import RealTestScreen from "./screens/RealTestScreen.jsx";
+import HomePage from "./pages/HomePage";
+import PracticePage from "./pages/PracticePage";
+import TestPage from "./pages/TestPage";
 
 const App = () => (
   <Router>
     <Routes>
-      <Route path="/" element={<HomeScreen />} />
-      <Route path="/practice" element={<TestScreen />} />
-      <Route path="/test" element={<RealTestScreen />} />
+      <Route path="/" element={<HomePage />} />
+      <Route path="/practice" element={<PracticePage />} />
+      <Route path="/test" element={<TestPage />} />
     </Routes>
   </Router>
 );

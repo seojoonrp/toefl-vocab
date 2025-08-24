@@ -8,11 +8,9 @@ import LoadingOverlay from "../components/LoadingOverlay";
 const API_URL =
   "https://script.google.com/macros/s/AKfycbzlU6YFbMhh0uPFke31Q1w5X3wXbWljM4sKB78MSfQb7w6iW8DPKSeve9H0YHbSDEY/exec";
 
-const RealTestScreen = () => {
+const PracticePage = () => {
   const location = useLocation();
   const navigate = useNavigate();
-
-  const [cacList, setCacList] = useState([]);
 
   const { testWordCount, testLanguage, words } = location.state || {};
 
@@ -63,18 +61,24 @@ const RealTestScreen = () => {
     return finalQueue;
   }, [words, testWordCount]);
 
-  const [correctCount, setCorrectCount] = useState(0);
+  const [curQueue, setCurQueue] = useState(mainQueue);
+  const [reviewQueue, setReviewQueue] = useState([]);
+  const [curCorrectCount, setCurCorrectCount] = useState(0);
   const [curIndex, setCurIndex] = useState(0);
   const [userInput, setUserInput] = useState("");
   const [isWrong, setIsWrong] = useState(false);
 
-  const curWord = mainQueue[curIndex];
+  const curWord = curQueue[curIndex];
   const prompt = testLanguage === "e_from_k" ? curWord.korean : curWord.english;
   const answer = testLanguage === "e_from_k" ? curWord.english : curWord.korean;
 
-  const moveToNextWord = () => {
-    if (curIndex + 1 < mainQueue.length) {
+  const moveToNextWord = (nextReviewQueue = reviewQueue) => {
+    if (curIndex + 1 < curQueue.length) {
       setCurIndex((prev) => prev + 1);
+    } else if (nextReviewQueue.length > 0) {
+      setCurQueue(nextReviewQueue);
+      setReviewQueue([]);
+      setCurIndex(0);
     } else {
       setIsFinished(true);
     }
@@ -99,26 +103,17 @@ const RealTestScreen = () => {
       }
     } else {
       curWord.wrong += 1;
-      moveToNextWord();
+
+      const updatedReviewQueue = [...reviewQueue, curWord];
+      setReviewQueue(updatedReviewQueue);
+      moveToNextWord(updatedReviewQueue);
     }
   };
 
   const handleCorrect = () => {
     curWord.correct += 1;
-    setCorrectCount((prev) => prev + 1);
+    setCurCorrectCount((prev) => prev + 1);
     moveToNextWord();
-  };
-
-  const handleCheckAsCorrect = () => {
-    setCacList((prev) => [
-      ...prev,
-      {
-        english: curWord.english,
-        answer: curWord.korean,
-        user_answer: userInput,
-      },
-    ]);
-    handleCorrect();
   };
 
   const [isFinished, setIsFinished] = useState(false);
@@ -126,8 +121,6 @@ const RealTestScreen = () => {
   const [loading, setLoading] = useState(false);
 
   const sendResultsToSheet = async () => {
-    console.log("Check as Correct: ", cacList);
-
     if (sentResults) {
       alert("결과 전송중임 ㄱㄷ");
       return;
@@ -170,11 +163,12 @@ const RealTestScreen = () => {
   return (
     <div className="test-screen-wrapper">
       {loading && <LoadingOverlay message="결과를 전송중입니다..." />}
+
       {!isFinished ? (
         <>
-          <span className="title-text">Test</span>
+          <span className="title-text">Practice</span>
           <span className="cur-word-count-text">
-            {curIndex + 1} / {mainQueue.length}
+            {curCorrectCount} / {mainQueue.length}
           </span>
 
           <div className="test-prompt">{prompt}</div>
@@ -192,7 +186,7 @@ const RealTestScreen = () => {
                   if (e.key === "Enter") handleNext();
                   if (e.key === " ") {
                     e.preventDefault();
-                    handleCheckAsCorrect();
+                    handleCorrect();
                   }
                 }}
                 autoFocus
@@ -218,7 +212,7 @@ const RealTestScreen = () => {
             {isWrong && (
               <button
                 className="test-next-button"
-                onClick={handleCheckAsCorrect}
+                onClick={handleCorrect}
                 style={{ backgroundColor: "var(--light-blue)" }}
               >
                 Check as Correct
@@ -229,9 +223,6 @@ const RealTestScreen = () => {
       ) : (
         <>
           <span className="finished-text">시험 종료!</span>
-          <span className="correct-count-text">
-            {correctCount} / {mainQueue.length}
-          </span>
           <button className="send-results-button" onClick={sendResultsToSheet}>
             Send Results
           </button>
@@ -244,4 +235,4 @@ const RealTestScreen = () => {
   );
 };
 
-export default RealTestScreen;
+export default PracticePage;
