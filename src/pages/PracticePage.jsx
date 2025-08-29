@@ -24,7 +24,7 @@ const PracticePage = () => {
     const latestWeekWords = words.filter((word) => word.week === latestWeek);
     const previousWeekWords = words.filter((word) => word.week !== latestWeek);
 
-    const recentCount = Math.floor(totalCount * 0.5);
+    const recentCount = Math.floor(totalCount * 0.4);
     const recentSample = [...latestWeekWords]
       .sort(() => 0.5 - Math.random())
       .slice(0, recentCount);
@@ -37,7 +37,7 @@ const PracticePage = () => {
       return aAccuracy - bAccuracy;
     });
 
-    const accuracyCount = Math.floor(totalCount * 0.4);
+    const accuracyCount = Math.floor(totalCount * 0.35);
     const accuracySample = sortedByAccuracy.slice(0, accuracyCount);
 
     const remainingWords = previousWeekWords.filter(
