@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import "../styles/styles.css";
 import useWordData from "../hooks/useWordData.js";
 import WeekCard from "../components/WeekCard.jsx";
-import "../styles/styles.css";
+import WeekModal from "../components/WeekModal.jsx";
 import ArrowImage from "../assets/images/arrow.svg";
 import LoadingOverlay from "../components/LoadingOverlay.jsx";
 
@@ -13,8 +14,9 @@ const HomePage = () => {
   const words = useWordData();
 
   const [testWordCount, setTestWordCount] = useState(40);
-  const [testLanguage, setTestLanguage] = useState("k_from_e");
   const [testMode, setTestMode] = useState("practice");
+  const [selectedWeek, setSelectedWeek] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const weeks = [...new Set(words.map((word) => word.week))].sort(
     (a, b) => b - a
@@ -23,11 +25,11 @@ const HomePage = () => {
   const handleStartTest = () => {
     if (testMode === "test") {
       navigate("/test", {
-        state: { testWordCount, testLanguage, words },
+        state: { testWordCount, words },
       });
     } else {
       navigate("/practice", {
-        state: { testWordCount, testLanguage, words },
+        state: { testWordCount, words },
       });
     }
   };
@@ -60,32 +62,9 @@ const HomePage = () => {
           </div>
         </div>
 
-        <div className="test-language-wrapper">
-          <button
-            className="test-language-button"
-            onClick={() => setTestLanguage("e_from_k")}
-            style={{
-              backgroundColor: testLanguage === "e_from_k" ? "var(--blue)" : "",
-              color: testLanguage === "e_from_k" ? "white" : "",
-            }}
-          >
-            Guess English from Korean
-          </button>
-          <button
-            className="test-language-button"
-            onClick={() => setTestLanguage("k_from_e")}
-            style={{
-              backgroundColor: testLanguage === "k_from_e" ? "var(--blue)" : "",
-              color: testLanguage === "k_from_e" ? "white" : "",
-            }}
-          >
-            Guess Korean from English
-          </button>
-        </div>
-
         <div className="test-mode-wrapper">
           <button
-            className="test-language-button"
+            className="test-mode-button"
             onClick={() => setTestMode("practice")}
             style={{
               backgroundColor: testMode === "practice" ? "var(--blue)" : "",
@@ -95,7 +74,7 @@ const HomePage = () => {
             Practice Mode
           </button>
           <button
-            className="test-language-button"
+            className="test-mode-button"
             onClick={() => setTestMode("test")}
             style={{
               backgroundColor: testMode === "test" ? "var(--blue)" : "",
@@ -111,9 +90,25 @@ const HomePage = () => {
         </button>
       </div>
 
-      {weeks.map((week) => (
-        <WeekCard key={week} week={week} words={words} />
-      ))}
+      <div className="weeks-wrapper">
+        {weeks.map((week) => (
+          <WeekCard
+            key={week}
+            week={week}
+            words={words}
+            setIsModalOpen={setIsModalOpen}
+            setSelectedWeek={setSelectedWeek}
+          />
+        ))}
+      </div>
+
+      {isModalOpen && (
+        <WeekModal
+          week={selectedWeek}
+          onClose={() => setIsModalOpen(false)}
+          weekWords={words.filter((word) => word.week === selectedWeek)}
+        />
+      )}
     </div>
   );
 };

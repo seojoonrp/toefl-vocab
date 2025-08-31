@@ -1,8 +1,4 @@
-import React, { useState } from "react";
-import WeekModal from "./WeekModal.jsx";
-
-const WeekCard = ({ week, words }) => {
-  const [open, setOpen] = useState(false);
+const WeekCard = ({ week, words, setIsModalOpen, setSelectedWeek }) => {
   const weekWords = words.filter((word) => word.week === week);
 
   if (weekWords.length === 0) return null;
@@ -16,7 +12,10 @@ const WeekCard = ({ week, words }) => {
     <>
       <div
         className="week-card-wrapper"
-        onClick={() => setOpen(true)}
+        onClick={() => {
+          setIsModalOpen(true);
+          setSelectedWeek(week);
+        }}
         style={{
           backgroundColor: week % 2 === 0 ? "var(--light-blue)" : "var(--blue)",
         }}
@@ -30,14 +29,6 @@ const WeekCard = ({ week, words }) => {
           {accuracy}%
         </span>
       </div>
-
-      {open && (
-        <WeekModal
-          week={week}
-          onClose={() => setOpen(false)}
-          weekWords={weekWords}
-        />
-      )}
     </>
   );
 };

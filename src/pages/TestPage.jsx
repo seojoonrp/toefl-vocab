@@ -14,53 +14,11 @@ const TestPage = () => {
 
   const [cacList, setCacList] = useState([]);
 
-  const { testWordCount, testLanguage, words } = location.state || {};
+  const { testWordCount, words } = location.state || {};
 
   const mainQueue = useMemo(() => {
     if (!words || words.length === 0) return [];
-
-    const totalCount = testWordCount;
-
-    const latestWeek = Math.max(...words.map((word) => word.week));
-
-    const latestWeekWords = words.filter((word) => word.week === latestWeek);
-    const previousWeekWords = words.filter((word) => word.week !== latestWeek);
-
-    const recentCount = Math.floor(totalCount * 0.4);
-    const recentSample = [...latestWeekWords]
-      .sort(() => 0.5 - Math.random())
-      .slice(0, recentCount);
-
-    const sortedByAccuracy = [...previousWeekWords].sort((a, b) => {
-      const aTotal = a.total || 0;
-      const bTotal = b.total || 0;
-      const aAccuracy = aTotal > 0 ? a.correct / aTotal : 0;
-      const bAccuracy = bTotal > 0 ? b.correct / bTotal : 0;
-      return aAccuracy - bAccuracy;
-    });
-
-    const accuracyCount = Math.floor(totalCount * 0.35);
-    const accuracySample = sortedByAccuracy.slice(0, accuracyCount);
-
-    const remainingWords = previousWeekWords.filter(
-      (word) => !accuracySample.includes(word)
-    );
-    const randomCount =
-      totalCount - (recentSample.length + accuracySample.length);
-    const randomSample = [...remainingWords]
-      .sort(() => 0.5 - Math.random())
-      .slice(0, randomCount);
-
-    const finalQueue = [...recentSample, ...accuracySample, ...randomSample]
-      .sort(() => 0.5 - Math.random())
-      .map((word) => ({
-        english: word.english,
-        korean: word.korean,
-        correct: 0,
-        wrong: 0,
-      }));
-
-    return finalQueue;
+    return chooseWord(words, testWordCount);
   }, [words, testWordCount]);
 
   const [correctCount, setCorrectCount] = useState(0);
@@ -69,8 +27,8 @@ const TestPage = () => {
   const [isWrong, setIsWrong] = useState(false);
 
   const curWord = mainQueue[curIndex];
-  const prompt = testLanguage === "e_from_k" ? curWord.korean : curWord.english;
-  const answer = testLanguage === "e_from_k" ? curWord.english : curWord.korean;
+  const prompt = curWord.english;
+  const answer = curWord.korean;
 
   const moveToNextWord = () => {
     if (curIndex + 1 < mainQueue.length) {

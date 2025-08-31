@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import "../styles/styles.css";
 import "../styles/test.css";
 import LoadingOverlay from "../components/LoadingOverlay";
+import { chooseWord } from "../utils/chooseWord";
 
 const API_URL =
   "https://script.google.com/macros/s/AKfycbzlU6YFbMhh0uPFke31Q1w5X3wXbWljM4sKB78MSfQb7w6iW8DPKSeve9H0YHbSDEY/exec";
@@ -12,53 +13,11 @@ const PracticePage = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { testWordCount, testLanguage, words } = location.state || {};
+  const { testWordCount, words } = location.state || {};
 
   const mainQueue = useMemo(() => {
     if (!words || words.length === 0) return [];
-
-    const totalCount = testWordCount;
-
-    const latestWeek = Math.max(...words.map((word) => word.week));
-
-    const latestWeekWords = words.filter((word) => word.week === latestWeek);
-    const previousWeekWords = words.filter((word) => word.week !== latestWeek);
-
-    const recentCount = Math.floor(totalCount * 0.4);
-    const recentSample = [...latestWeekWords]
-      .sort(() => 0.5 - Math.random())
-      .slice(0, recentCount);
-
-    const sortedByAccuracy = [...previousWeekWords].sort((a, b) => {
-      const aTotal = a.total || 0;
-      const bTotal = b.total || 0;
-      const aAccuracy = aTotal > 0 ? a.correct / aTotal : 0;
-      const bAccuracy = bTotal > 0 ? b.correct / bTotal : 0;
-      return aAccuracy - bAccuracy;
-    });
-
-    const accuracyCount = Math.floor(totalCount * 0.35);
-    const accuracySample = sortedByAccuracy.slice(0, accuracyCount);
-
-    const remainingWords = previousWeekWords.filter(
-      (word) => !accuracySample.includes(word)
-    );
-    const randomCount =
-      totalCount - (recentSample.length + accuracySample.length);
-    const randomSample = [...remainingWords]
-      .sort(() => 0.5 - Math.random())
-      .slice(0, randomCount);
-
-    const finalQueue = [...recentSample, ...accuracySample, ...randomSample]
-      .sort(() => 0.5 - Math.random())
-      .map((word) => ({
-        english: word.english,
-        korean: word.korean,
-        correct: 0,
-        wrong: 0,
-      }));
-
-    return finalQueue;
+    return chooseWord(words, testWordCount);
   }, [words, testWordCount]);
 
   const [curQueue, setCurQueue] = useState(mainQueue);
@@ -69,8 +28,8 @@ const PracticePage = () => {
   const [isWrong, setIsWrong] = useState(false);
 
   const curWord = curQueue[curIndex];
-  const prompt = testLanguage === "e_from_k" ? curWord.korean : curWord.english;
-  const answer = testLanguage === "e_from_k" ? curWord.english : curWord.korean;
+  const prompt = curWord.english;
+  const answer = curWord.korean;
 
   const moveToNextWord = (nextReviewQueue = reviewQueue) => {
     if (curIndex + 1 < curQueue.length) {
