@@ -1,14 +1,3 @@
-body {
-  font-family: "Pretendard", sans-serif !important;
-  overflow: auto;
-}
-
-@supports (-webkit-touch-callout: none) {
-  body {
-    font-family: "Pretendard", sans-serif !important;
-  }
-}
-
 :root {
   --blue: #5849df;
   --light-blue: #7363ff;
@@ -146,7 +135,6 @@ body {
   width: 100%;
   background-color: #dedede;
   color: #a6a6a6;
-  font-family: "Pretendard", sans-serif;
   font-size: 14px;
   font-weight: 300;
   letter-spacing: -0.2px;
@@ -163,7 +151,6 @@ body {
 .test-start-button {
   background-color: var(--blue);
   color: white;
-  font-family: "Pretendard", sans-serif;
   font-size: 22px;
   font-weight: 500;
   letter-spacing: -0.3px;
@@ -189,7 +176,6 @@ body {
 .send-results-button {
   background-color: var(--light-blue);
   color: white;
-  font-family: "Pretendard", sans-serif;
   font-size: 20px;
   font-weight: 500;
   letter-spacing: -0.3px;
@@ -204,7 +190,6 @@ body {
 .home-button {
   background-color: var(--blue);
   color: white;
-  font-family: "Pretendard", sans-serif;
   font-size: 20px;
   font-weight: 500;
   letter-spacing: -0.3px;
@@ -231,7 +216,6 @@ body {
 }
 
 .loading-text {
-  font-family: "Pretendard", sans-serif;
   color: var(--blue);
   font-size: 18px;
   font-weight: 500;

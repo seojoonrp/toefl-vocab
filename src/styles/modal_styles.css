@@ -15,6 +15,7 @@
   width: 100%;
   max-width: 420px;
   height: 60%;
+  min-height: 480px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
